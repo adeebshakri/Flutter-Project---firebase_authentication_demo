@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "440440168338",
+    "firebase_url": "https://flutter-adeeb-intro-setup.firebaseio.com",
+    "project_id": "flutter-adeeb-intro-setup",
+    "storage_bucket": "flutter-adeeb-intro-setup.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:440440168338:android:1279969acf12f3a0c16b4b",
+        "android_client_info": {
+          "package_name": "com.example.firebase_setup_adeeb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "440440168338-75pm2lth2ehrn5h3j6ukb0q3sjpbc9hg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.firebase_setup_adeeb",
+            "certificate_hash": "78adb8c89e94c82b8fe8d896011afb83d36ff812"
+          }
+        },
+        {
+          "client_id": "440440168338-vr054vnrs60khajc4tk6d9hhvfi7u6nt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2_pBPgMraN4pPd13ZdqCoZJ6ECqR7yn8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "440440168338-vr054vnrs60khajc4tk6d9hhvfi7u6nt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
