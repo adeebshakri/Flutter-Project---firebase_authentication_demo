@@ -28,21 +28,19 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Board> boardMessages = List();
-  Board board;
-  final FirebaseDatabase database = FirebaseDatabase.instance;
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  List<Board> boardMessages = List();    //a list of objects Board , boardMessages is used to add all the board objects we are retrieving and send to our db
+  Board board; //a Board object
+  final FirebaseDatabase database = FirebaseDatabase.instance; //handle to get in our firebase db (a db reference/ a db object)
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();//it will help us to get a form key handle to use
   DatabaseReference databaseReference; // databaseReference object
 
   @override
   void initState() {
     super.initState();
 
-    board = Board("", "");
-    databaseReference =
-        database.reference().child("community_board"); //creating a tree
-    databaseReference.onChildAdded.listen(
-        _onEntryAdded); //allows us to have a callback from db .listen will continuously be listening to changes being added onto db
+    board = Board("", "");  //instantiate board
+    databaseReference = database.reference().child("community_board"); //creating a tree , child is what we ill be adding to our realtime db
+    databaseReference.onChildAdded.listen(_onEntryAdded); //allows us to have a callback from db .listen will continuously be listening to changes being added onto db
     databaseReference.onChildChanged.listen(_onEntryChanged);
   }
 
@@ -67,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         leading: Icon(Icons.subject),
                         title: TextFormField(
                           initialValue: "",
-                          onSaved: (val) => board.subject = val,
+                          onSaved: (val) => board.subject = val,  //setting board instance field of the object to whatever we are passing
                           validator: (val) => val == "" ? val : null,
                         ),
                       ),
@@ -93,11 +91,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
               ),),
+
+            //to show dynamically all of the board communications we are adding into our db to be shown as a Listview in the UI
             Flexible(
-                child: FirebaseAnimatedList(
-                  query: databaseReference,
-                  //query will hold the data from our db . We get that from passing in the datbaseReference as such
-                  itemBuilder: (_, DataSnapshot snapshot,
+                child: FirebaseAnimatedList(      // we could have also gone by creating a Listview Builder. FirebaseAnimatedList is a Listview Builder that has all the things we need to query a firebase db and list all the items in a Listview
+                  query: databaseReference,      //query will hold the data from our db . We get that from passing in the datbaseReference as such
+                  itemBuilder: (_, DataSnapshot snapshot, // Because FirebaseAnimatedList is a Listview , thus itemBuilder. _ is context
                       Animation<double> animation, int index) {
                     return Card(
                       child: ListTile(
@@ -117,29 +116,38 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _onEntryAdded(Event event) {
-    setState(() {
+    setState(() {          //setState will go ahead and rebuild the UI
       boardMessages.add(Board.fromSnapshot(event.snapshot));
     });
   }
 
   void handleSubmit() {
     final FormState form = formKey.currentState;
-    if (form.validate()) {
+    if (form.validate()) {   //if all our fields have data
       form.save(); //save
       form.reset(); //clear out
       //save form data to the db
-      databaseReference.push().set(board
-          .toJson()); //push() gives each item we add into our db a very unique key
+      databaseReference.push().set(board.toJson()); //push() gives each item we add into our db a very unique key
     }
   }
 
   void _onEntryChanged(Event event) {
-    var oldEntry = boardMessages.singleWhere((entry) {
+    var oldEntry = boardMessages.singleWhere((entry) {  //singleWhere is used to compare element we want to compare
       return entry.key == event.snapshot.key;
     });
     setState(() {
-      boardMessages[boardMessages.indexOf(oldEntry)] =
-          Board.fromSnapshot(event.snapshot);
+      boardMessages[boardMessages.indexOf(oldEntry)] = Board.fromSnapshot(event.snapshot);
     });
   }
 }
+
+
+
+//database.reference().child("message").set({   //reading from db
+//   "firstname": "Adeeb"
+//});
+//setState((){
+//  database.reference().child("message").once().then((DataSnapshot snapshot){
+//    Map<dynamic,dynamic> data = snapshot.value;
+//    print("Values from db: ${snapshot.value}");
+//});
